@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תפוחים לתפוחים</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>תפוחים לתפוחים</h1>
+        
+        <div id="main-menu">
+            <h2>בחר את תפקידך במשחק:</h2>
+            <button id="judge-btn" class="role-btn">שופט</button>
+            <button id="player-btn" class="role-btn">משתתף</button>
+        </div>
+
+        <div id="judge-screen" class="screen hidden">
+            <h2>אתה השופט</h2>
+            <div id="green-card" class="card green-card">
+                <div class="card-content">
+                    <p id="green-card-text"></p>
+                </div>
+            </div>
+            <button id="new-green-card" class="action-btn">קלף ירוק חדש</button>
+            <button id="back-to-menu" class="action-btn">חזרה לתפריט</button>
+        </div>
+
+        <div id="player-screen" class="screen hidden">
+            <h2>אתה משתתף</h2>
+            <div id="red-cards-container">
+                <!-- כרטיסים אדומים יוצגו כאן -->
+            </div>
+            <div id="selected-card-container" class="hidden">
+                <h3>הקלף שבחרת:</h3>
+                <div id="selected-card" class="card red-card">
+                    <div class="card-content">
+                        <p id="selected-card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <button id="new-cards" class="action-btn">קלפים חדשים</button>
+            <button id="back-to-menu-player" class="action-btn">חזרה לתפריט</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
