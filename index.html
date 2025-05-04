@@ -29,18 +29,23 @@
 
         <div id="player-screen" class="screen hidden">
             <h2>אתה משתתף</h2>
-            <div id="red-cards-container">
-                <!-- כרטיסים אדומים יוצגו כאן -->
+            <div id="cards-selection-view">
+                <div id="red-cards-container">
+                    <!-- כרטיסים אדומים יוצגו כאן -->
+                </div>
             </div>
-            <div id="selected-card-container" class="hidden">
+            
+            <div id="selected-card-view" class="hidden">
                 <h3>הקלף שבחרת:</h3>
                 <div id="selected-card" class="card red-card">
                     <div class="card-content">
                         <p id="selected-card-text"></p>
                     </div>
                 </div>
+                <button id="return-to-cards" class="action-btn">חזרה לבחירת קלף אחר</button>
+                <button id="new-card" class="action-btn">קלף חדש</button>
             </div>
-            <button id="new-cards" class="action-btn">קלפים חדשים</button>
+            
             <button id="back-to-menu-player" class="action-btn">חזרה לתפריט</button>
         </div>
     </div>

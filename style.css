@@ -31,8 +31,6 @@ h2 {
 }
 
 .role-btn {
-    background-color: #4CAF50;
-    color: white;
     border: none;
     padding: 15px 32px;
     text-align: center;
@@ -45,12 +43,28 @@ h2 {
     font-weight: bold;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    color: white;
+}
+
+#judge-btn {
+    background-color: #4CAF50;
+}
+
+#player-btn {
+    background-color: #f44336;
 }
 
 .role-btn:hover {
-    background-color: #3e8e41;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+#judge-btn:hover {
+    background-color: #3e8e41;
+}
+
+#player-btn:hover {
+    background-color: #d32f2f;
 }
 
 .action-btn {

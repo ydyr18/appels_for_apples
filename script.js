@@ -7,15 +7,18 @@ const playerBtn = document.getElementById('player-btn');
 const greenCardText = document.getElementById('green-card-text');
 const redCardsContainer = document.getElementById('red-cards-container');
 const newGreenCardBtn = document.getElementById('new-green-card');
-const newCardsBtn = document.getElementById('new-cards');
 const backToMenuBtn = document.getElementById('back-to-menu');
 const backToMenuPlayerBtn = document.getElementById('back-to-menu-player');
-const selectedCardContainer = document.getElementById('selected-card-container');
+const selectedCardView = document.getElementById('selected-card-view');
+const cardsSelectionView = document.getElementById('cards-selection-view');
 const selectedCardText = document.getElementById('selected-card-text');
+const returnToCardsBtn = document.getElementById('return-to-cards');
+const newCardBtn = document.getElementById('new-card');
 
 // משתנים גלובליים
 let currentRedCards = [];
 let selectedCard = null;
+let selectedCardIndex = -1;
 
 // פונקציות עזר
 function getRandomCard(cardsArray) {
@@ -49,36 +52,47 @@ function showPlayerScreen() {
     mainMenu.classList.add('hidden');
     judgeScreen.classList.add('hidden');
     playerScreen.classList.remove('hidden');
-    selectedCardContainer.classList.add('hidden');
+    
+    // בתחילה מראים את מסך בחירת הקלפים
+    showCardsSelectionView();
     
     // בדוק אם יש לנו קלפים שמורים
     const savedCards = JSON.parse(localStorage.getItem('redCards'));
     
-    if (savedCards && savedCards.length > 0 && selectedCard) {
-        // החלף רק את הקלף שנבחר
-        const index = currentRedCards.indexOf(selectedCard);
-        if (index !== -1) {
-            currentRedCards[index] = getRandomCard(redCards);
-            renderRedCards();
-        }
+    if (savedCards && savedCards.length === 5) {
+        // השתמש בקלפים השמורים
+        currentRedCards = savedCards;
     } else {
         // קבל חמישה קלפים אדומים חדשים
         currentRedCards = getRandomCards(redCards, 5);
-        renderRedCards();
     }
+    
+    // רנדר את הקלפים
+    renderRedCards();
     
     // שמור את הקלפים הנוכחיים ב-localStorage
     localStorage.setItem('redCards', JSON.stringify(currentRedCards));
     
     // אפס את הקלף הנבחר
     selectedCard = null;
+    selectedCardIndex = -1;
+}
+
+function showCardsSelectionView() {
+    cardsSelectionView.classList.remove('hidden');
+    selectedCardView.classList.add('hidden');
+}
+
+function showSelectedCardView() {
+    cardsSelectionView.classList.add('hidden');
+    selectedCardView.classList.remove('hidden');
 }
 
 // פונקציית רינדור של הקלפים האדומים
 function renderRedCards() {
     redCardsContainer.innerHTML = '';
     
-    currentRedCards.forEach(card => {
+    currentRedCards.forEach((card, index) => {
         const cardElement = document.createElement('div');
         cardElement.classList.add('card', 'red-card');
         
@@ -93,23 +107,36 @@ function renderRedCards() {
         
         // הוסף אירוע לחיצה לקלף
         cardElement.addEventListener('click', () => {
-            // הסר את הסימון מכל הקלפים
-            const allCards = redCardsContainer.querySelectorAll('.card');
-            allCards.forEach(c => c.classList.remove('selected'));
-            
-            // סמן את הקלף הנוכחי
-            cardElement.classList.add('selected');
-            
             // שמור את הקלף שנבחר
             selectedCard = card;
+            selectedCardIndex = index;
             
             // הצג את הקלף שנבחר
             selectedCardText.textContent = card;
-            selectedCardContainer.classList.remove('hidden');
+            showSelectedCardView();
         });
         
         redCardsContainer.appendChild(cardElement);
     });
+}
+
+// החלף קלף נבחר בחדש
+function replaceSelectedCard() {
+    if (selectedCardIndex >= 0 && selectedCardIndex < currentRedCards.length) {
+        // קבל קלף חדש במקום הקלף שנבחר
+        currentRedCards[selectedCardIndex] = getRandomCard(redCards);
+        
+        // שמור את הקלפים המעודכנים
+        localStorage.setItem('redCards', JSON.stringify(currentRedCards));
+        
+        // הצג את הקלף החדש
+        showCardsSelectionView();
+        renderRedCards();
+        
+        // אפס את הקלף הנבחר
+        selectedCard = null;
+        selectedCardIndex = -1;
+    }
 }
 
 // אירועי לחיצה
@@ -119,25 +146,13 @@ newGreenCardBtn.addEventListener('click', () => {
     const greenCard = getRandomCard(greenCards);
     greenCardText.textContent = greenCard;
 });
-newCardsBtn.addEventListener('click', () => {
-    currentRedCards = getRandomCards(redCards, 5);
-    renderRedCards();
-    selectedCardContainer.classList.add('hidden');
-    selectedCard = null;
-    
-    // שמור את הקלפים החדשים ב-localStorage
-    localStorage.setItem('redCards', JSON.stringify(currentRedCards));
-});
+returnToCardsBtn.addEventListener('click', showCardsSelectionView);
+newCardBtn.addEventListener('click', replaceSelectedCard);
 backToMenuBtn.addEventListener('click', showMainMenu);
 backToMenuPlayerBtn.addEventListener('click', showMainMenu);
 
 // בדוק אם קיימים קלפים שמורים בעת טעינת האתר
 window.addEventListener('load', () => {
-    const savedCards = JSON.parse(localStorage.getItem('redCards'));
-    if (savedCards && savedCards.length > 0) {
-        currentRedCards = savedCards;
-    }
-    
     // הצג את התפריט הראשי בטעינה
     showMainMenu();
 }); 
